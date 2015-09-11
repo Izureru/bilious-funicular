@@ -1,0 +1,10 @@
+{
+	"ImportPath": "github.com/DigitalInnovation/bilious-funicular",
+	"GoVersion": "go1.3.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/Bowery/slack",
+			"Rev": "12fa50d4146c25c17ca03e924b0c563d0d4cf57b"
+		}
+	]
+}
