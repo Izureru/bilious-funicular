@@ -2,10 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Bowery/slack"
 	"io"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/DigitalInnovation/bilious-funicular/global"
 )
 
 var (
@@ -38,7 +42,7 @@ func test(rw http.ResponseWriter, req *http.Request) {
 		}
 		log.Printf("%s\n", "Working on it")
 
-		client = slack.NewClient("xxxxxxx")
+		client = slack.NewClient(global.Config.Slack_Key)
 		err := client.SendMessage("#staff-ass-apps", t.Repositories.Name+" "+t.Pull_requests.Url, t.Sender.Login)
 		if err != nil {
 			log.Fatal(err)
@@ -46,7 +50,14 @@ func test(rw http.ResponseWriter, req *http.Request) {
 	}
 }
 func main() {
+	logEnvironmentVariables()
+
+	global.Setup()
 
 	http.HandleFunc("/", test)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", global.Config.Port), nil))
+}
+
+func logEnvironmentVariables() {
+	log.Printf("PORT: %v", os.Getenv("PORT"))
 }
