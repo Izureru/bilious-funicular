@@ -43,7 +43,7 @@ func test(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("%s\n", "Working on it")
 
 		client = slack.NewClient(global.Config.Slack_Key)
-		err := client.SendMessage("#testhooks", t.Repositories.Name+" "+t.Pull_requests.Url, t.Sender.Login)
+		err := client.SendMessage("#staff-ass-apps", t.Repositories.Name+" "+t.Pull_requests.Url, t.Sender.Login)
 		if err != nil {
 			log.Fatal(err)
 		}
