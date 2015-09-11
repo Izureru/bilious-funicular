@@ -16,7 +16,7 @@ type test_struct struct {
 	Action        string `json:"action"`
 	Number        int    `json:"number"`
 	Pull_requests struct {
-		Diff_url string `json:"diff_url"`
+		Url string `json:"url"`
 	} `json:"pull_request"`
 	Repositories struct {
 		Name string `json:"name"`
@@ -38,8 +38,8 @@ func test(rw http.ResponseWriter, req *http.Request) {
 		}
 		log.Printf("%s\n", "Working on it")
 
-		client = slack.NewClient("xxxxxxxxx")
-		err := client.SendMessage("#testhooks", t.Repositories.Name+" "+t.Pull_requests.Diff_url, t.Sender.Login)
+		client = slack.NewClient("xxxxxxx")
+		err := client.SendMessage("#staff-ass-apps", t.Repositories.Name+" "+t.Pull_requests.Url, t.Sender.Login)
 		if err != nil {
 			log.Fatal(err)
 		}
