@@ -6,7 +6,7 @@ end
 
 namespace :run do
 
-	task :prod do
+	task :local do
 		ENV['PORT']="8080"
 		ENV['SLACKKEY']="xxxxxxx"
 		sh  "go get"

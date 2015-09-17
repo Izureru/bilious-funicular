@@ -20,7 +20,7 @@ type test_struct struct {
 	Action        string `json:"action"`
 	Number        int    `json:"number"`
 	Pull_requests struct {
-		Url string `json:"url"`
+		Html_url string `json:"html_url"`
 	} `json:"pull_request"`
 	Repositories struct {
 		Name string `json:"name"`
@@ -43,9 +43,21 @@ func test(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("%s\n", "Working on it")
 
 		client = slack.NewClient(global.Config.Slack_Key)
-		err := client.SendMessage("#staff-ass-apps", t.Repositories.Name+" "+t.Pull_requests.Url, t.Sender.Login)
-		if err != nil {
-			log.Fatal(err)
+		if t.Action == "opened" {
+			err := client.SendMessage("#staff-ass-apps", "PR please \n"+t.Repositories.Name+" "+t.Pull_requests.Html_url, t.Sender.Login)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else if t.Action == "closed" {
+			err := client.SendMessage("#staff-ass-apps", t.Repositories.Name+"\n"+"PR is closed", t.Sender.Login)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			err := client.SendMessage("#testhooks", t.Repositories.Name+"\n"+"Something wierd is going on", t.Sender.Login)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }
@@ -60,4 +72,5 @@ func main() {
 
 func logEnvironmentVariables() {
 	log.Printf("PORT: %v", os.Getenv("PORT"))
+	log.Printf("SLACKKEY: %v", os.Getenv("SLACKKEY"))
 }
